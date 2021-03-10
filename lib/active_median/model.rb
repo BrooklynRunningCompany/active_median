@@ -67,7 +67,7 @@ module ActiveMedian
           relation.select(*group_values, "PERCENTILE_CONT(#{percentile}) WITHIN GROUP (ORDER BY #{column}) OVER (#{over}) AS #{column_alias}").unscope(:group)
         when /sqlite/i
           relation.select(*group_values, "PERCENTILE(#{column}, #{percentile} * 100) AS #{column_alias}")
-        when /postg/i, /redshift/i # postgis too
+        when /postg/i, /redshift/i, /cockroach/i # postgis too
           relation.select(*group_values, "PERCENTILE_CONT(#{percentile}) WITHIN GROUP (ORDER BY #{column}) AS #{column_alias}")
         else
           raise "Connection adapter not supported: #{connection.adapter_name}"
